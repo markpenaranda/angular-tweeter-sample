@@ -1,0 +1,39 @@
+
+<div class="header-container">
+    <div class="title">{{ searchType | titlecase }} Search</div>
+    
+    <input type="text" #search class="form-control" (keyup)="onType(search.value)"  
+    placeholder="Search by {{ searchType | titlecase }} ">
+</div>
+
+<div class="container card">
+    <p *ngIf="!(currentSearchQuery$ | async)">Please type search query</p>
+    <p *ngIf="(loading$ | async)">Loading ...</p>
+    <p *ngIf="( loaded$ | async ) && (tweets$ | async).length == 0">No tweets found..</p>
+    <table *ngIf="( loaded$ | async ) && (loading$ | async) == false && (currentSearchQuery$ | async) && (tweets$ | async).length > 0" class="table">
+        <thead>
+            <tr>
+                <th>Tweet</th>
+                <th>Likes</th>
+                <th>Replies</th>
+                <th>Retweets</th>
+                <th>Hashtags</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tweet of tweets$ | async">
+                <td class="left">{{ (tweet.text.length>50)? (tweet.text | slice:0:50)+'...':(tweet.text) }}</td>
+                <td class="center">{{ (tweet.likes > 0) ? tweet.likes : '-' }}</td>
+                <td class="center">{{ (tweet.replies > 0) ? tweet.replies : '-'  }}</td>
+                <td class="center">{{ (tweet.retweets > 0) ? tweet.retweets : '-' }}</td>
+                <td>{{ (tweet.hashtags.length > 2) ? tweet.hashtags.slice(0,2) : tweet.hashtags}}</td>
+                <td>{{ tweet.date | date: 'MMM dd, y' }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ngb-pagination *ngIf="(currentTotalCount$ | async) > 10" [collectionSize]="(currentTotalCount$ | async)" (pageChange)="changePage($event)" aria-label="Default pagination"></ngb-pagination>
+
+</div>

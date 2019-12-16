@@ -1,0 +1,10 @@
+{
+    "/hashtags": {
+      "target": "https://anymind-recruitment-python-backend.adasia.biz",
+      "secure": false
+    },
+    "/users": {
+      "target": "https://anymind-recruitment-python-backend.adasia.biz",
+      "secure": false
+    }
+  }
